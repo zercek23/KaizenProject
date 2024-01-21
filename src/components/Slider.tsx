@@ -66,14 +66,10 @@ export function Slider(props: SliderProps) {
       };
     }),
   );
-  console.log('routes', routes);
 
   const renderScene = ({route}) => {
-    console.log('burak1', route);
-    console.log('burak2', tabs);
     const TabScene =
       tabs?.length > 0 && tabs.find(t => t.id === route.key)?.component;
-    console.log('burak3', TabScene);
 
     return TabScene ? <TabScene /> : null;
   };

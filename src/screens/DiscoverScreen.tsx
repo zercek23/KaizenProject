@@ -1,10 +1,20 @@
-import {ScrollView, Text, TouchableOpacity, View, Image} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Touchable,
+} from 'react-native';
 import color from '../common/colors';
 import styled from 'styled-components';
 import {DiscoverIcon} from '../assets/icons/DiscoverIcon';
 import {useQuery} from 'react-query';
 import {fetchPromotions, fetchTags} from '../common/api';
 import {Slider} from '../components/Slider';
+import {useNavigation} from '@react-navigation/native';
+import PATHS from '../common/paths';
+import RenderHtml from 'react-native-render-html';
 
 const Container = styled(View)`
   display: flex;
@@ -52,7 +62,7 @@ const PromotionSlider = styled(View)`
   flex: 12;
 `;
 
-const Promotion = styled(View)`
+const Promotion = styled(TouchableOpacity)`
   align-self: center;
   height: 80%;
   width: 80%;
@@ -78,15 +88,15 @@ const MainCard = styled(View)`
 `;
 
 const PromotionContainer = styled(View)`
-  margin-top: 10px;
-  width: 90%;
+  margin-top: 5px;
+  width: 95%;
   height: 300px;
 `;
 
 const PromotionImage = styled(Image)`
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   border-bottom-left-radius: 100px;
 `;
 
@@ -110,7 +120,7 @@ const PromotionBrandImage = styled(Image)`
 
 const PromotionText = styled(Text)`
   color: ${color.black};
-
+  margin: 0px 30px;
   text-align: center;
   font-family: Helvetica;
   font-size: 14px;
@@ -130,7 +140,19 @@ const AppText = styled(Text)`
   margin-bottom: 20px;
 `;
 
+const titleTagsStyles = {
+  span: {
+    color: color.black,
+    fontFamily: 'Helvetica',
+    fontSize: '14px',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+};
+
 export function DiscoverScreen() {
+  const navigation = useNavigation();
   const {data: tags} = useQuery('tags', () => fetchTags());
   const {data: promotions} = useQuery('promotions', () => fetchPromotions());
   console.log('tags', tags);
@@ -157,7 +179,11 @@ export function DiscoverScreen() {
                 id: p.Id,
                 title: p.SeoName,
                 component: () => (
-                  <Promotion>
+                  <Promotion
+                    activeOpacity={1}
+                    onPress={() =>
+                      navigation.navigate(PATHS.DETAILS_SCREEN.name, {id: p.Id})
+                    }>
                     <MainCard>
                       <PromotionContainer>
                         <PromotionImage source={{uri: p.ImageUrl}} />
@@ -166,7 +192,16 @@ export function DiscoverScreen() {
                         </PromotionBrandImageContainer>
                       </PromotionContainer>
 
-                      <PromotionText>{p.Title}</PromotionText>
+                      <PromotionText>
+                        <RenderHtml
+                          ignoredStyles={['color', 'font']}
+                          contentWidth={10}
+                          source={{
+                            html: p.Title,
+                          }}
+                          tagsStyles={titleTagsStyles}
+                        />
+                      </PromotionText>
                       <AppText color={p.PromotionCardColor}>Daha Daha</AppText>
                     </MainCard>
                   </Promotion>

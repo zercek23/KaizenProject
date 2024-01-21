@@ -18,7 +18,6 @@ export const fetchTags = () =>
       }
 
       const data = await response.json();
-      console.log('Data:', data);
       resolve(data);
     } catch (error) {
       console.error('Error:', error);
@@ -42,7 +41,6 @@ export const fetchPromotions = () =>
       }
 
       const data = await response.json();
-      console.log('Data:', data);
       resolve(data);
     } catch (error) {
       console.error('Error:', error);
@@ -66,7 +64,6 @@ export const fetchPromotionById = (id: string) =>
       }
 
       const data = await response.json();
-      console.log('Data:', data);
       resolve(data);
     } catch (error) {
       console.error('Error:', error);

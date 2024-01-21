@@ -46,7 +46,6 @@ export const IconContainer = styled(View)`
 type TabBarProps = BottomTabBarProps & {};
 
 function RenderIcon({name, color}) {
-  console.log('color', color);
   switch (name) {
     case PATHS.DISCOVER_SCREEN.name:
       return <DiscoverIcon color={color} />;
@@ -64,7 +63,6 @@ function TabBar(props: TabBarProps) {
   const {state} = props;
   const activeTabIndex = state.index; // Get the index of the active tab
   const activeTabRoute = state.routes[activeTabIndex]; // Get the active tab's route object
-  console.log('navi', state);
 
   const checkRouteActive = (name: string) => {
     return activeTabRoute.name === name ? color.black : color.gray;
